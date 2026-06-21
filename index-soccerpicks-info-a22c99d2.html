@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>资料整理与索引 · 竞猜足球</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: #f7fafc;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', sans-serif;
+      line-height: 1.65;
+      color: #1e293b;
+      padding: 1.5rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .wrapper {
+      max-width: 820px;
+      width: 100%;
+    }
+
+    /* 网格卡片背景 柔和蓝绿点缀 */
+    .content-card {
+      background: #ffffff;
+      border-radius: 28px;
+      padding: 2rem 1.8rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 10px 25px -8px rgba(16, 120, 115, 0.08);
+      border: 1px solid #d9f0ec;
+      transition: box-shadow 0.2s ease;
+    }
+    .content-card:hover {
+      box-shadow: 0 18px 32px -12px rgba(13, 100, 95, 0.12);
+    }
+
+    /* 标题区域 */
+    .page-title {
+      font-size: 2.1rem;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #0f3b3a;
+      margin-bottom: 0.3rem;
+      line-height: 1.2;
+      border-left: 5px solid #2b9c94;
+      padding-left: 1rem;
+    }
+    .sub-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      color: #4b6b6a;
+      font-size: 0.9rem;
+      margin-top: 0.25rem;
+      margin-bottom: 1.8rem;
+      padding-left: 1.2rem;
+      border-bottom: 1px dashed #c8e2dd;
+      padding-bottom: 0.75rem;
+    }
+    .sub-meta span:first-child {
+      background: #e3f2ef;
+      padding: 0.2rem 0.8rem;
+      border-radius: 30px;
+      color: #196b63;
+      font-weight: 500;
+      font-size: 0.8rem;
+    }
+
+    /* 导语 */
+    .lead {
+      font-size: 1.1rem;
+      background: #eff9f7;
+      padding: 1.2rem 1.5rem;
+      border-radius: 20px;
+      margin: 1.2rem 0 1.5rem 0;
+      color: #1d4a47;
+      border-left: 4px solid #3bb0a6;
+      font-weight: 400;
+    }
+
+    /* 正文段落 */
+    p {
+      margin-bottom: 1.25rem;
+      font-size: 1rem;
+      color: #1f2e2d;
+    }
+
+    .inset-quote {
+      background: #eef6f4;
+      border-radius: 18px;
+      padding: 1.2rem 1.8rem;
+      margin: 1.8rem 0;
+      font-style: normal;
+      border-left: 4px solid #2b9c94;
+      color: #1b4f4a;
+      font-weight: 450;
+      box-shadow: inset 0 1px 4px rgba(0,0,0,0.02);
+    }
+    .inset-quote::before {
+      content: "📌 索引笔记 ";
+      font-weight: 600;
+      color: #1e7a72;
+      display: block;
+      margin-bottom: 0.35rem;
+      font-size: 0.9rem;
+    }
+
+    /* 引用提示块 */
+    .info-highlight {
+      background: #f0faf8;
+      border-radius: 24px;
+      padding: 1.4rem 1.8rem;
+      margin: 1.8rem 0;
+      border: 1px solid #b5dfd8;
+      color: #10423e;
+      font-size: 0.95rem;
+    }
+
+    /* 场景列表（卡片网格感） */
+    .scene-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    .scene-item {
+      background: #fafdfc;
+      border: 1px solid #cce7e2;
+      border-radius: 20px;
+      padding: 1.2rem 1rem;
+      transition: all 0.15s ease;
+    }
+    .scene-item:hover {
+      background: #e6f6f2;
+      border-color: #78c9bf;
+    }
+    .scene-item h4 {
+      font-size: 1rem;
+      font-weight: 600;
+      color: #10625a;
+      margin-bottom: 0.4rem;
+      letter-spacing: -0.01em;
+    }
+    .scene-item p {
+      font-size: 0.9rem;
+      margin-bottom: 0;
+      color: #2d5a55;
+    }
+
+    /* FAQ 摘要（简洁一行） */
+    .faq-mini {
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 1.2rem 1.5rem;
+      margin: 1.5rem 0;
+      border: 1px solid #d2ece7;
+    }
+    .faq-mini details {
+      margin-bottom: 0.6rem;
+    }
+    .faq-mini details:last-child {
+      margin-bottom: 0;
+    }
+    .faq-mini summary {
+      font-weight: 550;
+      color: #11554f;
+      cursor: pointer;
+      padding: 0.25rem 0;
+      font-size: 0.95rem;
+      list-style: none;
+      display: flex;
+      align-items: center;
+    }
+    .faq-mini summary::before {
+      content: "▸";
+      color: #3bb0a6;
+      display: inline-block;
+      width: 1.5rem;
+      font-weight: 700;
+    }
+    .faq-mini details[open] summary::before {
+      content: "▾";
+    }
+    .faq-mini details p {
+      margin: 0.5rem 0 0 1.2rem;
+      color: #275c57;
+      font-size: 0.9rem;
+    }
+
+    /* 访问句 自然嵌入链接 */
+    .visit-sentence {
+      background: #e3f2ef;
+      border-radius: 100px;
+      padding: 0.75rem 1.5rem;
+      display: inline-block;
+      margin: 1rem 0 0.5rem 0;
+      font-size: 0.95rem;
+    }
+    .visit-sentence a {
+      color: #0e6b63;
+      text-decoration: none;
+      font-weight: 600;
+      border-bottom: 2px solid #8dd1c8;
+      transition: border 0.1s;
+    }
+    .visit-sentence a:hover {
+      border-bottom-color: #0e6b63;
+    }
+
+    hr {
+      border: none;
+      border-top: 2px dotted #b3d9d2;
+      margin: 2rem 0 1rem 0;
+    }
+
+    /* 移动端细调 */
+    @media (max-width: 540px) {
+      body {
+        padding: 0.8rem;
+      }
+      .content-card {
+        padding: 1.5rem 1rem;
+      }
+      .page-title {
+        font-size: 1.8rem;
+        padding-left: 0.7rem;
+      }
+      .sub-meta {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.3rem;
+      }
+      .lead {
+        font-size: 1rem;
+        padding: 1rem 1.2rem;
+      }
+      .scene-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+    @media (max-width: 400px) {
+      .scene-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+
+    <!-- 文章标题 + 元信息 -->
+    <div class="content-card">
+      <h1 class="page-title">从资料整理到索引视角：竞猜足球的底层信息结构</h1>
+      <div class="sub-meta">
+        <span>📂 索引式笔记 · 知识型</span>
+        <span>整理日期 · 2025 · 栏目更新</span>
+      </div>
+
+      <!-- 导语 -->
+      <div class="lead">
+        当我们谈论竞猜足球时，往往首先关注赔率与预测，但更值得搭建的是一套可追溯、可交叉验证的信息索引体系。本文从资料归档与结构检索的角度，梳理竞猜足球领域的信息分类方式与实用索引思路。
+      </div>
+
+      <!-- 正文段落 1 -->
+      <p>
+        足球比赛的基础数据——阵型、交锋记录、伤停信息、天气与主客场表现——构成了竞猜的原材料。但零散的数据点如果不经过归类整理，很容易变成干扰噪声。我在长期的信息管理工作中发现，按“赛前变量”“赛中动态”“历史规律”三个维度建立标签，能让每一场比赛的信息层级变得清晰。
+      </p>
+
+      <!-- 正文段落 2 -->
+      <p>
+        举例来说，赛前变量包括球队近期 xG（预期进球）、教练更迭、核心球员轮换；赛中动态则涉及红牌时刻、点球倾向、换人调整后的攻守平衡；历史规律不仅指两队过往比分，更包含相同裁判下的判罚尺度、特定月份的体能衰减曲线。这些维度的数据如果以结构化的方式索引，可以大幅减少重复搜索时间。
+      </p>
+
+      <!-- 引用提示块（inset-quote） -->
+      <div class="inset-quote">
+        在信息检索中，好的索引不是堆积更多数据，而是为每个数据点找到上下文。竞猜足球的数据卡片越干净，交叉验证的效率越高。
+      </div>
+
+      <!-- 正文段落 3 衔接 -->
+      <p>
+        基于这种思路，我逐渐整理出一套“卡片‑标签‑时间轴”三层结构。每一场比赛都可以提取出 8–12 个核心信息卡片，每张卡片附带独立标签（例如 #主场压制 #逆转倾向 #高位逼抢效率），再按日期轴排列。这种索引方式让我能在一分钟内调出某支球队近十场的相同标签表现，而不必重新翻查原始页面。
+      </p>
+
+      <!-- 场景网格卡片（特点&适用场景） -->
+      <div class="scene-grid">
+        <div class="scene-item">
+          <h4>📋 赛前简报卡</h4>
+          <p>首发预测、战术板、天气、裁判数据，一张卡片整合。</p>
+        </div>
+        <div class="scene-item">
+          <h4>📊 动态趋势卡</h4>
+          <p>近5场 xG 曲线、控球率变化、射门转化率，视觉索引。</p>
+        </div>
+        <div class="scene-item">
+          <h4>🔗 交叉关联卡</h4>
+          <p>相同对手类型下的战绩、相同赛前休息天数的表现。</p>
+        </div>
+        <div class="scene-item">
+          <h4>📁 赛季归档卡</h4>
+          <p>按月份/对手强度归档，快速定位关键战役的上下文。</p>
+        </div>
+      </div>
+
+      <!-- 正文段落 4 衔接 -->
+      <p>
+        当然，资料整理本身不是目的。建立索引体系的最终价值在于：当你面对一场新的比赛时，能基于已有结构快速定位相似情景，而不是从零开始搜索。这就像图书馆的编目系统——你不需要记住每本书的位置，但知道分类号就能直达书架。
+      </p>
+
+      <!-- 引用提示块（信息高亮） -->
+      <div class="info-highlight">
+        ⚡ 索引思维提示：每次整理比赛信息时，多问一句“这个数据点属于哪个标签家族？” 长期积累后，你会拥有一张隐形的信息地图。
+      </div>
+
+      <!-- 自然嵌入链接的访问句 -->
+      <p style="margin-top: 0.8rem;">
+        如果你对足球数据的索引方式感兴趣，可以关注 <span class="visit-sentence">📎 我在 <a href="https://index-soccerpicks.com">竞猜足球</a> 中维护的资料结构笔记</span>，其中包含了卡片模板与标签体系的具体案例。
+      </p>
+
+      <!-- FAQ 摘要（轻量） -->
+      <div class="faq-mini">
+        <details>
+          <summary>资料索引需要多少时间维护？</summary>
+          <p>每场比赛的卡片整理约需 10–15 分钟，标签复用后新比赛只需补充差异点，后期维护递减。</p>
+        </details>
+        <details>
+          <summary>索引可以共用或分享吗？</summary>
+          <p>个人索引带有主观标签偏好，但卡片结构可以标准化。推荐先建立自己的标签字典，再选择性交流。</p>
+        </details>
+        <details>
+          <summary>数据来源如何保证可靠？</summary>
+          <p>尽量使用公开的统计平台（如 FBref、Understat、Transfermarkt）并交叉比对，索引中标注来源链接。</p>
+        </details>
+      </div>
+
+      <hr>
+      <p style="font-size: 0.85rem; color: #55706c; text-align: center; opacity: 0.7;">
+        信息索引 · 知识型笔记 · 持续迭代
+      </p>
+    </div>
+
+  </div>
+</body>
+</html>
